@@ -1,4 +1,6 @@
-import java.util.HashMap;
+package model;
+
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -18,7 +20,7 @@ public class Room {
     public Room(String name, String description) {
         this.name = name;
         this.description = description;
-        this.exits = new HashMap<>();
+        this.exits = new LinkedHashMap<>();
         this.locked = false;
         this.visited = false;
     }
@@ -33,6 +35,21 @@ public class Room {
 
     public Map<String, Room> getExits() {
         return exits;
+    }
+
+    public String getExitSummary() {
+        if (exits.isEmpty()) {
+            return "none";
+        }
+
+        StringBuilder summary = new StringBuilder();
+        for (Map.Entry<String, Room> exit : exits.entrySet()) {
+            if (summary.length() > 0) {
+                summary.append(", ");
+            }
+            summary.append(exit.getKey()).append(" -> ").append(exit.getValue().getName());
+        }
+        return summary.toString();
     }
 
     public String getName() {

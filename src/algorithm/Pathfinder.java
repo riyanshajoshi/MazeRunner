@@ -1,4 +1,8 @@
+package algorithm;
+
 import java.util.*;
+
+import model.Room;
 
 /**
  * This is the actual DSA piece of the project: BFS shortest path on a graph

@@ -1,23 +1,33 @@
+package model;
+
+import algorithm.Pathfinder;
+
 public class Enemy {
     private Room currentRoom;
     private final String name;
+    private int turns = 0;
 
     public Enemy(String name, Room startRoom) {
         this.name = name;
         this.currentRoom = startRoom;
     }
 
-    /**
-     * Called once per turn. The enemy asks Pathfinder for the shortest
-     * route to the player's current room, then takes ONE step along it.
-     * This is where the graph algorithm actually drives gameplay.
-     */
-    public void takeTurnToward(Room playerRoom) {
-        Room next = Pathfinder.nextStepToward(currentRoom, playerRoom);
-        if (next != currentRoom) {
-            System.out.println("You hear footsteps moving through the " + next.getName() + "...");
+    public boolean takeTurnToward(Room playerRoom) {
+        turns++;
+
+        // The Watcher moves every second player move so the game stays fair.
+        if (turns % 2 != 0) {
+            return false;
         }
-        currentRoom = next;
+
+        Room next = Pathfinder.nextStepToward(currentRoom, playerRoom);
+
+        if (next != currentRoom) {
+            currentRoom = next;
+            return true;
+        }
+
+        return false;
     }
 
     public boolean hasCaughtPlayer(Room playerRoom) {
@@ -31,4 +41,5 @@ public class Enemy {
     public String getName() {
         return name;
     }
+
 }

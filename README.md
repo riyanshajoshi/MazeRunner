@@ -1,101 +1,102 @@
 # MazeRunner
 
-A graph-based Java adventure game using **Breadth-First Search (BFS)** for pathfinding.
+MazeRunner is a Java adventure game built around a graph map and Breadth-First Search (BFS) pathfinding.
 
-## 🎮 About the Game
+The player explores a connected set of rooms, collects the Brass Key, unlocks the Vault, and escapes while The Watcher follows the shortest path through the map.
 
-MazeRunner is a console-based adventure game where the player explores a connected map of rooms, collects items, unlocks areas, and tries to reach the final destination while avoiding an enemy.
+## Features
 
-The game map is represented as a **graph**, where each room is a node and each connection between rooms is an edge.
+- Graph-based room map using an adjacency list
+- Packaged Java source structure for cleaner compilation
+- BFS shortest-path logic for enemy movement
+- Locked Vault that requires the Brass Key
+- Inventory, map, look, and movement commands
+- Swing desktop interface with a room map, status panel, movement controls, and event log
+- Polished console status display with location, inventory, exits, and threat level
+- Deterministic room/exits output for easier demo presentation
 
-## ✨ Features
-
-- 🗺️ Graph-based game map
-- 🧭 Player movement between connected rooms
-- 🔑 Item collection and locked rooms
-- 👾 Enemy that follows the player
-- 🧠 BFS-based shortest pathfinding
-- 🎯 Goal-based gameplay
-- 💻 Console-based Java interface
-
-## 🧠 Algorithms & Concepts
+## Algorithms And Concepts
 
 ### Graph Representation
 
-The game world is represented using an **adjacency list**.
+Each room is a vertex in the graph. Each room exit is an edge to another room.
 
-- Each room represents a vertex.
-- Each exit represents an edge.
-- The map contains connected rooms that the player can explore.
+The graph is stored as an adjacency list:
 
-### Breadth-First Search (BFS)
+```text
+Room -> direction -> connected Room
+```
 
-BFS is used by the enemy to find the shortest path toward the player.
+### Breadth-First Search
+
+The Watcher uses BFS to find the shortest path from its current room to the player's current room. BFS is appropriate because every edge in the map has the same movement cost.
 
 For an unweighted graph:
 
-**Time Complexity:** `O(V + E)`
+- Time complexity: `O(V + E)`
+- Space complexity: `O(V)`
 
-**Space Complexity:** `O(V)`
+Where `V` is the number of rooms and `E` is the number of exits/connections.
 
-where:
-
-- `V` = number of rooms
-- `E` = number of connections between rooms
-
-### Object-Oriented Programming
-
-The project uses Java classes to separate different parts of the game:
-
-- `Room` — represents a room/node
-- `GameMap` — creates the game map
-- `Player` — handles player movement and inventory
-- `Enemy` — handles enemy behavior
-- `Pathfinder` — implements BFS pathfinding
-- `Game` — controls the main game loop
-
-## 🕹️ How to Play
-
-The player can use the following commands:
-
-| Command | Description |
-|---|---|
-| `north` | Move north |
-| `south` | Move south |
-| `east` | Move east |
-| `west` | Move west |
-| `take` | Pick up an available item |
-| `inventory` | View collected items |
-| `help` | Show available commands |
-| `quit` | Exit the game |
-
-### Objective
-
-1. Explore the rooms.
-2. Find the key.
-3. Use the key to access the locked area.
-4. Reach the Vault.
-5. Avoid being caught by the Watcher.
-
-## 🛠️ Technologies
-
-- Java
-- Java Collections Framework
-- Object-Oriented Programming
-- Graphs
-- Breadth-First Search (BFS)
-- Command Line Interface
-
-## 📁 Project Structure
+## Project Structure
 
 ```text
 MazeRunner/
-│
-├── Game.java
-├── GameMap.java
-├── Room.java
-├── Player.java
-├── Enemy.java
-├── Pathfinder.java
-├── README.md
-└── .gitignore
+|-- README.md
+|-- .gitignore
+`-- src/
+    |-- algorithm/
+    |   `-- Pathfinder.java
+    |-- game/
+    |   |-- CommandResult.java
+    |   |-- Game.java
+    |   `-- GameSession.java
+    |-- map/
+    |   `-- GameMap.java
+    |-- model/
+    |   |-- Enemy.java
+    |   |-- Player.java
+    |   `-- Room.java
+    `-- ui/
+        `-- MazeRunnerUI.java
+```
+
+## How To Run
+
+Compile:
+
+```powershell
+javac -d out (Get-ChildItem -Recurse -Filter *.java src | ForEach-Object { $_.FullName })
+```
+
+Run the Swing version:
+
+```powershell
+java -cp out ui.MazeRunnerUI
+```
+
+Run the console version:
+
+```powershell
+java -cp out game.Game
+```
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `north`, `south`, `east`, `west` | Move between rooms |
+| `n`, `s`, `e`, `w` | Short movement aliases |
+| `take` | Pick up the item in the current room |
+| `inventory`, `inv`, `i` | Show collected items |
+| `look`, `l` | Reprint the current room details |
+| `map` | Show visited rooms |
+| `help`, `h` | Show available commands |
+| `quit`, `exit` | Exit the game |
+
+## Objective
+
+1. Explore the house.
+2. Find and take the Brass Key.
+3. Reach the locked Vault.
+4. Escape before The Watcher catches you.
