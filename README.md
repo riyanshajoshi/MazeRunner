@@ -1,49 +1,101 @@
-# Escape the House — a graph-based text adventure
+# MazeRunner
 
-A text-adventure game where the map is literally a **graph**: rooms are
-nodes, corridors are edges, and an enemy hunts you using **BFS shortest-path**
-every turn. Built in pure Java — no external libraries or frameworks.
+A graph-based Java adventure game using **Breadth-First Search (BFS)** for pathfinding.
 
-## Why this project
-Most beginner projects (to-do apps, library systems) don't showcase
-algorithmic thinking. This one puts a real graph algorithm (BFS) at the
-center of the gameplay itself — the enemy's chase behavior *is* the
-algorithm running live.
+## 🎮 About the Game
 
-## How to run
-```bash
-cd src
-javac *.java
-java Game
-```
+MazeRunner is a console-based adventure game where the player explores a connected map of rooms, collects items, unlocks areas, and tries to reach the final destination while avoiding an enemy.
 
-Commands once running: `north`, `south`, `east`, `west`, `take`, `inventory`, `quit`.
-Goal: reach the **Vault**. You'll need the **key** from the Library first.
-Avoid **The Watcher** — it uses BFS to find the shortest path to you every turn.
+The game map is represented as a **graph**, where each room is a node and each connection between rooms is an edge.
 
-## Project structure
-- `Room.java` — a graph node. Holds its exits (adjacency list), lock state, and any item.
-- `GameMap.java` — builds the graph: creates rooms and wires up edges (exits).
-- `Pathfinder.java` — **the core DSA piece.** BFS shortest-path implementation, used by the Enemy.
-- `Player.java` — tracks player position and inventory.
-- `Enemy.java` — each turn, asks `Pathfinder` for the next step toward the player.
-- `Game.java` — main loop: read input, update state, check win/lose.
+## ✨ Features
 
-## Ideas to extend this (roughly in order of difficulty)
-1. **Bigger map** — add more rooms, branching paths, multiple keys/locked doors.
-2. **Weighted edges** — some corridors take longer to cross (e.g. "narrow passage").
-   Swap BFS for **Dijkstra** in `Pathfinder.java` to handle this correctly.
-3. **A\* search** — add a heuristic (e.g. precomputed room "distance to goal")
-   so the enemy pathfinds faster on a large map.
-4. **Multiple enemies** — each with independent pathfinding.
-5. **Save/load** — serialize game state to a file (light I/O practice).
-6. **Simple GUI** — swap the console for a grid drawn with Java Swing,
-   color-coding visited rooms, the player, and the enemy.
-7. **Difficulty settings** — change enemy speed (moves every turn vs. every 2 turns),
-   or give the enemy limited vision (only chase if within N rooms).
+- 🗺️ Graph-based game map
+- 🧭 Player movement between connected rooms
+- 🔑 Item collection and locked rooms
+- 👾 Enemy that follows the player
+- 🧠 BFS-based shortest pathfinding
+- 🎯 Goal-based gameplay
+- 💻 Console-based Java interface
 
-## What to say about this in an interview
-- Explain *why* BFS guarantees shortest path in an unweighted graph.
-- Explain the trade-off if you upgrade to Dijkstra/A* (when it's worth the complexity).
-- Talk through the adjacency-list design (`Map<String, Room>` per room) vs.
-  an adjacency matrix, and why adjacency list fits a sparse map better.
+## 🧠 Algorithms & Concepts
+
+### Graph Representation
+
+The game world is represented using an **adjacency list**.
+
+- Each room represents a vertex.
+- Each exit represents an edge.
+- The map contains connected rooms that the player can explore.
+
+### Breadth-First Search (BFS)
+
+BFS is used by the enemy to find the shortest path toward the player.
+
+For an unweighted graph:
+
+**Time Complexity:** `O(V + E)`
+
+**Space Complexity:** `O(V)`
+
+where:
+
+- `V` = number of rooms
+- `E` = number of connections between rooms
+
+### Object-Oriented Programming
+
+The project uses Java classes to separate different parts of the game:
+
+- `Room` — represents a room/node
+- `GameMap` — creates the game map
+- `Player` — handles player movement and inventory
+- `Enemy` — handles enemy behavior
+- `Pathfinder` — implements BFS pathfinding
+- `Game` — controls the main game loop
+
+## 🕹️ How to Play
+
+The player can use the following commands:
+
+| Command | Description |
+|---|---|
+| `north` | Move north |
+| `south` | Move south |
+| `east` | Move east |
+| `west` | Move west |
+| `take` | Pick up an available item |
+| `inventory` | View collected items |
+| `help` | Show available commands |
+| `quit` | Exit the game |
+
+### Objective
+
+1. Explore the rooms.
+2. Find the key.
+3. Use the key to access the locked area.
+4. Reach the Vault.
+5. Avoid being caught by the Watcher.
+
+## 🛠️ Technologies
+
+- Java
+- Java Collections Framework
+- Object-Oriented Programming
+- Graphs
+- Breadth-First Search (BFS)
+- Command Line Interface
+
+## 📁 Project Structure
+
+```text
+MazeRunner/
+│
+├── Game.java
+├── GameMap.java
+├── Room.java
+├── Player.java
+├── Enemy.java
+├── Pathfinder.java
+├── README.md
+└── .gitignore
