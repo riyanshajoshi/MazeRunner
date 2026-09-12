@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="MazeRunner Daily — the original BFS maze adventure as a daily web game." />
+  <title>MazeRunner Daily</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">MAZERUNNER</p>
+        <h1>Daily Escape</h1>
+        <p class="subtitle">One maze. One day. One escape.</p>
+      </div>
+      <div class="header-actions">
+        <button id="helpBtn" class="icon-btn" aria-label="How to play">?</button>
+        <button id="statsBtn" class="icon-btn" aria-label="Statistics">▥</button>
+      </div>
+    </header>
+
+    <section class="daily-bar">
+      <div>
+        <strong id="dailyLabel">MAZERUNNER DAILY #1</strong>
+        <span id="dateLabel"></span>
+      </div>
+      <div id="countdown" class="countdown"></div>
+    </section>
+
+    <section class="objective panel">
+      <div>
+        <p class="eyebrow">TODAY'S OBJECTIVE</p>
+        <h2>Find the Brass Key. Reach the Vault. Escape the Watcher.</h2>
+      </div>
+      <div class="objective-stats">
+        <span><b id="moves">0</b><small>moves</small></span>
+        <span><b id="limit">15</b><small>limit</small></span>
+      </div>
+    </section>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <section class="game-layout">
+      <section class="panel map-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">THE HOUSE</p>
+            <h2>Explore the rooms</h2>
+          </div>
+          <span id="threatBadge" class="threat low">LOW THREAT</span>
+        </div>
+        <div id="map" class="house-map" aria-label="Maze map"></div>
+        <div class="legend">
+          <span><i class="dot player"></i>You</span>
+          <span><i class="dot enemy"></i>Watcher</span>
+          <span><i class="dot key"></i>Key</span>
+          <span><i class="dot vault"></i>Vault</span>
+        </div>
+      </section>
+
+      <aside class="panel side-panel">
+        <div class="location-card">
+          <p class="eyebrow">CURRENT LOCATION</p>
+          <h2 id="roomName">Foyer</h2>
+          <p id="roomDescription"></p>
+          <div id="roomItem" class="item-card hidden"></div>
+        </div>
+
+        <div class="threat-card">
+          <div class="panel-heading compact">
+            <div>
+              <p class="eyebrow">THE WATCHER</p>
+              <h3 id="threatText">Distant movement</h3>
+            </div>
+            <span id="distance" class="distance">—</span>
+          </div>
+          <div class="threat-meter"><span id="threatMeter"></span></div>
+          <p id="threatDetail">The house is quiet... for now.</p>
+        </div>
+
+        <div class="inventory-card">
+          <p class="eyebrow">INVENTORY</p>
+          <div id="inventory">Empty</div>
+        </div>
+
+        <div class="controls">
+          <button class="move-btn" data-direction="north">↑<span>North</span></button>
+          <div>
+            <button class="move-btn" data-direction="west">←<span>West</span></button>
+            <button class="move-btn" data-direction="south">↓<span>South</span></button>
+            <button class="move-btn" data-direction="east">→<span>East</span></button>
+          </div>
+          <button id="takeBtn" class="action-btn">Take item</button>
+        </div>
+      </aside>
+    </section>
+
+    <section class="panel log-panel">
+      <div class="panel-heading compact">
+        <div>
+          <p class="eyebrow">ADVENTURE LOG</p>
+          <h2>What happens?</h2>
+        </div>
+        <button id="resetBtn" class="text-btn">Restart today</button>
+      </div>
+      <div id="log" class="log" aria-live="polite"></div>
+    </section>
+
+    <footer>
+      <span>MazeRunner Daily · original game mechanics, now on the web</span>
+      <span>BFS powers The Watcher's shortest-path chase</span>
+    </footer>
+  </main>
+
+  <dialog id="helpModal">
+    <div class="modal-card">
+      <button class="close" data-close="helpModal">×</button>
+      <p class="eyebrow">HOW TO PLAY</p>
+      <h2>Escape the house.</h2>
+      <ol>
+        <li>Explore the same daily maze as every other player.</li>
+        <li>Find and <b>take the Brass Key</b>.</li>
+        <li>Reach the locked <b>Vault</b> to escape.</li>
+        <li>Every second successful move lets <b>The Watcher</b> move one step toward you using BFS.</li>
+        <li>You have a limited number of moves. Share your spoiler-free result with friends.</li>
+      </ol>
+      <p class="small-note">The map layout stays faithful to the Java game: rooms are graph nodes and doors are graph edges.</p>
+    </div>
+  </dialog>
+
+  <dialog id="statsModal">
+    <div class="modal-card stats-card">
+      <button class="close" data-close="statsModal">×</button>
+      <p class="eyebrow">YOUR JOURNEY</p>
+      <h2>Statistics</h2>
+      <div class="stats-grid">
+        <div><strong id="played">0</strong><span>Played</span></div>
+        <div><strong id="winRate">0</strong><span>Escape %</span></div>
+        <div><strong id="streak">0</strong><span>Current streak</span></div>
+        <div><strong id="bestStreak">0</strong><span>Best streak</span></div>
+      </div>
+      <div id="resultArea" class="result-area hidden">
+        <p id="resultText"></p>
+        <button id="shareBtn" class="primary-btn">Share today's escape</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>

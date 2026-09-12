@@ -1,102 +1,146 @@
 # MazeRunner
 
-MazeRunner is a Java adventure game built around a graph map and Breadth-First Search (BFS) pathfinding.
+**MazeRunner** is a graph-based adventure game where the player explores a house, finds the **Brass Key**, unlocks the **Vault**, and tries to escape **The Watcher**.
 
-The player explores a connected set of rooms, collects the Brass Key, unlocks the Vault, and escapes while The Watcher follows the shortest path through the map.
+The project now has two versions:
 
-## Features
+1. **Java desktop version** — the original console/GUI implementation and the DSA-focused BFS pathfinding implementation.
+2. **MazeRunner Daily web version** — a browser game inspired by the *daily puzzle* format of games such as Wordle, while keeping MazeRunner's original gameplay.
 
-- Graph-based room map using an adjacency list
-- Packaged Java source structure for cleaner compilation
-- BFS shortest-path logic for enemy movement
-- Locked Vault that requires the Brass Key
-- Inventory, map, look, and movement commands
-- Swing desktop interface with a room map, status panel, movement controls, and event log
-- Polished console status display with location, inventory, exits, and threat level
-- Deterministic room/exits output for easier demo presentation
+## 🎮 MazeRunner Daily
 
-## Algorithms And Concepts
+Every calendar day, everyone receives the same deterministic challenge.
 
-### Graph Representation
+The objective is still the original MazeRunner objective:
 
-Each room is a vertex in the graph. Each room exit is an edge to another room.
+> **Find the Brass Key → avoid The Watcher → reach the locked Vault → escape.**
 
-The graph is stored as an adjacency list:
+The daily layer adds:
+
+- One shared puzzle per day
+- Daily puzzle number
+- Limited moves
+- Daily variations in the Brass Key and Watcher starting locations
+- Countdown to the next maze
+- Browser-saved progress
+- Win/loss statistics and streaks
+- Spoiler-free result sharing
+- Responsive desktop/mobile UI
+- Keyboard controls using **W/A/S/D** or arrow keys
+
+This is **not a 5-letter Wordle clone**. The original MazeRunner game is the puzzle.
+
+## 🧠 DSA: BFS
+
+The house is represented as an **undirected graph**:
+
+- Each room is a **vertex/node**.
+- Each doorway is an **edge**.
+- The Watcher uses **Breadth-First Search (BFS)** to find the shortest path to the player.
+- The Watcher moves every second successful player move, matching the Java game.
+
+For an unweighted graph, BFS gives a shortest path in:
+
+- **Time:** `O(V + E)`
+- **Space:** `O(V)`
+
+where `V` is the number of rooms and `E` is the number of connections.
+
+## 🗺️ Original Map
+
+The web version preserves the Java game's core map:
 
 ```text
-Room -> direction -> connected Room
+                    [Vault]
+                       |
+                    [Cellar]
+                       |
+                 [East Corridor]
+                  /            \
+              [Armory]       [Study]
+                 |               |
+          [Conservatory]      [Gallery]
+                 |             /     \
+              [Kitchen] ------       [Foyer]
 ```
 
-### Breadth-First Search
+The daily challenge changes the **key location** and **Watcher starting location** deterministically from the date, while the graph and core rules remain recognizable and fair.
 
-The Watcher uses BFS to find the shortest path from its current room to the player's current room. BFS is appropriate because every edge in the map has the same movement cost.
+## ▶️ Run the web game locally
 
-For an unweighted graph:
+No Java installation is needed for the web version.
 
-- Time complexity: `O(V + E)`
-- Space complexity: `O(V)`
+1. Open the `web` folder.
+2. Double-click `index.html`, or serve the project with a local web server.
+3. Play the daily maze in your browser.
 
-Where `V` is the number of rooms and `E` is the number of exits/connections.
+For example, with Python installed:
 
-## Project Structure
-
-```text
-MazeRunner/
-|-- README.md
-|-- .gitignore
-`-- src/
-    |-- algorithm/
-    |   `-- Pathfinder.java
-    |-- game/
-    |   |-- CommandResult.java
-    |   |-- Game.java
-    |   `-- GameSession.java
-    |-- map/
-    |   `-- GameMap.java
-    |-- model/
-    |   |-- Enemy.java
-    |   |-- Player.java
-    |   `-- Room.java
-    `-- ui/
-        `-- MazeRunnerUI.java
+```bash
+cd web
+python -m http.server 8000
 ```
 
-## How To Run
+Then open `http://localhost:8000`.
 
-Compile:
+## ☕ Run the Java version
 
-```powershell
-javac -d out (Get-ChildItem -Recurse -Filter *.java src | ForEach-Object { $_.FullName })
-```
+From the project root:
 
-Run the Swing version:
-
-```powershell
-java -cp out ui.MazeRunnerUI
+```bash
+javac -d out src/model/*.java src/map/*.java src/algorithm/*.java src/game/*.java src/ui/*.java
 ```
 
 Run the console version:
 
-```powershell
+```bash
 java -cp out game.Game
 ```
 
-## Commands
+Run the GUI version:
 
-| Command | Description |
-|---|---|
-| `north`, `south`, `east`, `west` | Move between rooms |
-| `n`, `s`, `e`, `w` | Short movement aliases |
-| `take` | Pick up the item in the current room |
-| `inventory`, `inv`, `i` | Show collected items |
-| `look`, `l` | Reprint the current room details |
-| `map` | Show visited rooms |
-| `help`, `h` | Show available commands |
-| `quit`, `exit` | Exit the game |
+```bash
+java -cp out ui.MazeRunnerUI
+```
 
-## Objective
+## 🌐 GitHub Pages
 
-1. Explore the house.
-2. Find and take the Brass Key.
-3. Reach the locked Vault.
-4. Escape before The Watcher catches you.
+The repository includes `.github/workflows/pages.yml`, which deploys the `web/` folder to GitHub Pages.
+
+After pushing the project to GitHub:
+
+1. Open the repository's **Settings**.
+2. Open **Pages**.
+3. Set the source to **GitHub Actions** if it is not already selected.
+4. Push to the `main` branch.
+5. GitHub Actions will build/deploy the website.
+
+## 📁 Project structure
+
+```text
+MazeRunner/
+├── src/
+│   ├── algorithm/             # BFS pathfinding
+│   ├── game/                  # Java game/session logic
+│   ├── map/                   # Graph construction
+│   ├── model/                 # Room, Player, Enemy
+│   └── ui/                    # Java GUI
+├── web/
+│   ├── index.html             # Daily game interface
+│   ├── style.css              # MazeRunner visual design
+│   └── script.js              # Web game + BFS + daily puzzle logic
+├── .github/workflows/
+│   └── pages.yml              # GitHub Pages deployment
+├── .nojekyll
+└── README.md
+```
+
+## ✨ Why the web version is different
+
+The web version is designed as a **daily MazeRunner challenge**, not as a replacement Wordle clone. Wordle provides the daily-puzzle idea; MazeRunner supplies the actual gameplay, graph, BFS enemy, key, Vault, and escape mechanics.
+
+## 👩‍💻 Project
+
+**MazeRunner — A BFS Graph Adventure Game**
+
+Built as a data-structures/algorithms project and extended into a daily browser game.
